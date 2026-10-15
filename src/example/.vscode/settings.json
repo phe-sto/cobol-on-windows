@@ -1,0 +1,5 @@
+{
+    "superbol.cobol.dialect": "default",
+    "superbol.cobol.sourceFormat": "fixed",
+    "superbol.cobol.copybooks": [ { "dir": "." }, { "dir": ".." }, { "dir": "copybooks" } ]
+}

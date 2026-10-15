@@ -1,0 +1,11 @@
+*.exe
+*.dll
+*.o
+*.i
+*.c
+*.c.h
+*.c.l*.h
+*.lst
+*.cbsql
+_superbol/
+*.log

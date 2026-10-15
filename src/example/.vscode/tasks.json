@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "COBOL: build",
+            "type": "process",
+            "command": "${config:superbol.cobcPath}",
+            "args": [ "-x", "-Wall", "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe", "${file}" ],
+            "options": { "cwd": "${fileDirname}" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": [ "$gnucobol" ]
+        },
+        {
+            "label": "COBOL: build (debug)",
+            "type": "process",
+            "command": "${config:superbol.cobcPath}",
+            "args": [ "-x", "-g", "-ftraceall", "-save-temps", "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe", "${file}" ],
+            "options": { "cwd": "${fileDirname}" },
+            "group": "build",
+            "problemMatcher": [ "$gnucobol" ]
+        },
+        {
+            "label": "COBOL: build (module .dll)",
+            "type": "process",
+            "command": "${config:superbol.cobcPath}",
+            "args": [ "-m", "-Wall", "-o", "${fileDirname}\\${fileBasenameNoExtension}.dll", "${file}" ],
+            "options": { "cwd": "${fileDirname}" },
+            "group": "build",
+            "problemMatcher": [ "$gnucobol" ]
+        },
+        {
+            "label": "COBOL: build and run",
+            "type": "process",
+            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "options": { "cwd": "${fileDirname}" },
+            "dependsOn": "COBOL: build",
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+            "problemMatcher": []
+        },
+        {
+            "label": "COBOL: build (SQL)",
+            "type": "process",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass", "-NoProfile", "-File", "${workspaceFolder}\\.vscode\\build-sql.ps1",
+                "-Source", "${file}",
+                "-GixppPath", "${config:gixsql.gixppPath}",
+                "-CobcPath", "${config:superbol.cobcPath}",
+                "-GixSqlLibDir", "${config:gixsql.libDir}"
+            ],
+            "options": { "cwd": "${fileDirname}" },
+            "group": "build",
+            "problemMatcher": [ "$gnucobol" ]
+        }
+    ]
+}

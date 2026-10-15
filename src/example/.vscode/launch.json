@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SuperBOL: debug (launch)",
+            "type": "superbol-gdb",
+            "request": "launch",
+            "preLaunchTask": "COBOL: build (debug)",
+            "useCobcrun": false,
+            "target": "${file}",
+            "arguments": "",
+            // Must be the folder of the file being debugged, not
+            // ${workspaceFolder}: SuperBOL's debug adapter resolves the
+            // executable as cwd + basename(target) + ".exe", so with the
+            // examples in subfolders a workspace-level cwd makes gdb look for
+            // <project>\<name>.exe and fail with "No such file or directory".
+            // It is also where "COBOL: build (debug)" writes the .exe and the
+            // .c/.c.l.h files the debugger's source map reads.
+            "cwd": "${fileDirname}",
+            "gdbtty": true
+        }
+    ]
+}
