@@ -1,1 +1,10 @@
 gixsql.log
+
+# Build output: install-cobol-on-win.ps1 compiles every example into
+# bin\example\ and writes their .cmd launchers there, so none of it belongs in
+# the repository. bin\example\access\sample-store.mdb is the exception: it is
+# source data, not build output, and the script downloads it from here when it
+# runs standalone.
+bin/example/**/*.exe
+bin/example/**/*.dll
+bin/example/**/*.cmd

@@ -124,8 +124,11 @@ Keys, inside a COBOL file:
 F9 and F10 build only outside a debug session; while one is running they stay the debugger's
 own toggle breakpoint and step over.
 
-The compiled examples also ship ready to run in `bin\example\`, each with a `.cmd` launcher
-that sets the runtime environment for you.
+The install also compiles every example into `bin\example\`, each with a `.cmd` launcher that
+sets the runtime environment for you — so they are ready to run, from Explorer or a plain
+terminal, without knowing anything about the toolchain. Those binaries are build output and are
+not committed here: only `bin\example\access\sample-store.mdb`, the Access database the examples
+query, is, since the script downloads it when it runs standalone.
 
 ## Licences
 
