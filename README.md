@@ -9,7 +9,7 @@ of the install.
 powershell -ExecutionPolicy Bypass -File .\src\install-cobol-on-win.ps1
 ```
 
-Project home: <https://www.papit.fr/cow>
+Project home: <https://github.com/phe-sto/cobol-on-windows>
 
 ## Why
 
@@ -37,8 +37,8 @@ This project is that day, done once, as a script:
   against a public MariaDB server. The install compiles all of them and runs them in front of
   you, so you know the toolchain works before you write a line.
 - **Offline-capable and self-contained.** The sources and every binary are embedded in the
-  project (`src\`, `bin\`). Downloaded the script alone? It fetches the same files from
-  <https://www.papit.fr/cow>. Nothing is pulled from a registry that may change under you.
+  project (`src\`, `bin\`). Downloaded the script alone? It fetches the same files from this
+  repository. Nothing is pulled from a registry that may change under you.
 - **No clicks.** One command. No installer wizard, no "next, next, finish", nothing to choose.
 - **No administrator rights.** Everything lands in a single folder (`c:\cobol-dev` by default)
   and can be deleted by deleting it. The one exception is the optional Excel/Access ODBC
@@ -66,11 +66,17 @@ From a clone or a copy of this project — uses the embedded binaries, no networ
 powershell -ExecutionPolicy Bypass -File .\src\install-cobol-on-win.ps1
 ```
 
-With only `install-cobol-on-win.ps1` downloaded from <https://www.papit.fr/cow> — it fetches
-what it needs, file by file:
+With only `install-cobol-on-win.ps1` downloaded from this repository — it fetches what it needs
+from here, file by file:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-cobol-on-win.ps1
+```
+
+```powershell
+# or, to get the script itself first:
+Invoke-WebRequest -UseBasicParsing -OutFile install-cobol-on-win.ps1 `
+  https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/install-cobol-on-win.ps1
 ```
 
 Useful options:
@@ -159,8 +165,9 @@ what actually got installed.
 | IBM DB2 ODBC/CLI driver ("DS Driver")                                                                                 | printed at install time | IBM proprietary. Licence and redistribution terms ship with it: `DB2CLI\clidriver\license\` (`odbc_LI_en.rtf`, `odbc_REDIST.txt`). |
 | Microsoft Access Database Engine redistributable — optional, admin only, gives ODBC access to `.accdb`/`.mdb`/`.xlsx` | 16.0.5044.1000          | Microsoft proprietary (its own EULA, accepted when the installer runs).                                                            |
 
-Those two are mirrored in `bin\` and on <https://www.papit.fr/cow> so the install works without
-hunting for a download page. They remain the property of IBM and Microsoft and are used under
+Those two are committed in `bin\` (Git LFS), which is also what the download fallback serves, so
+the install works without hunting for a download page. They remain the property of IBM and
+Microsoft and are used under
 their own terms — if you fork or re-host this project, read `odbc_REDIST.txt` and Microsoft's
 redistribution terms first. Oracle's Instant Client (OCI), for GixSQL's Oracle driver, is *not*
 included for exactly that reason.

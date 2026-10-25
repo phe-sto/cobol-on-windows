@@ -19,8 +19,13 @@ Codium for being Open Source and vendor free.
 
 # Code and binary sources
 
-Are to be embedded in the project. The project with be hosted on my website under https://www.papit.fr/cow path.
+Are to be embedded in the project. The project is hosted in the GitHub repo
+https://github.com/phe-sto/cobol-on-windows.
 It all serve as a fallback if only `.\src\install-cobol-on-win.ps1` is downloaded and ran.
+Binaries in `.\bin\` are Git LFS objects, so the fallback URLs use
+`https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/...` for those
+(`raw.githubusercontent.com` returns the LFS pointer instead of the file) and
+`https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/...` for everything else.
 Two folders, `.\src\` for sources and bin for binaries.
 Cobol example files are in `.\src\example\`
 
@@ -77,6 +82,10 @@ SELECT *
 FROM orders
 ORDER BY order_date
 ```
+
+# Monorepo with the website
+
+`.\wwww\` contains the GitHub website, the marketing entry point of the project.
 
 # License
 

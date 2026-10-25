@@ -20,10 +20,11 @@
       (src\example\) are used as-is when found next to the script (no network
       access); otherwise each missing file is downloaded, either from -VSCodiumUrl /
       -GnuCobolUrl / -SevenZipUrl / -GixSqlUrl, or from -ExampleBaseUrl for the
-      sample project. This lets the project be hosted at https://www.papit.fr/cow
-      and this script still work when only it, alone, is downloaded and run - those
-      URLs and -ProjectBinDir can still be overridden on the command line for
-      testing or to point at different sources.
+      sample project. Those downloads come straight from the project's GitHub
+      repository, https://github.com/phe-sto/cobol-on-windows, so this script
+      still works when only it, alone, is downloaded and run - those URLs and
+      -ProjectBinDir can still be overridden on the command line for testing or
+      to point at different sources.
     - SQL database access: GixSQL (an EXEC SQL preprocessor for GnuCOBOL) is
       installed alongside GnuCOBOL, ready to use with PostgreSQL, MySQL/MariaDB,
       SQLite and (via ODBC) any database with an ODBC driver, including DB2 (its
@@ -99,8 +100,8 @@
     IBM's DB2 CLI/ODBC driver ("DS Driver", a plain zip - no installer, no
     registration, just PATH) to use. Resolved the same way as every other binary
     in this script: a file of the same name in -ProjectBinDir is used as-is,
-    otherwise it is downloaded from this URL (the papit.fr/cow mirror by default,
-    since IBM itself has no stable, login-free download URL for it).
+    otherwise it is downloaded from this URL (this project's own GitHub copy by
+    default, since IBM itself has no stable, login-free download URL for it).
 
 .PARAMETER AccessEngineUrl
     Microsoft Access Database Engine redistributable (.exe) to use for Excel/Access
@@ -116,11 +117,12 @@
     before falling back to a download.
 
 .PARAMETER ExampleBaseUrl
-    Base URL hosting src\example\ (default: this project's site). Used file by file
-    for whichever sample-project file isn't found next to this script, in src\example\.
+    Base URL hosting src\example\ (default: this project's GitHub repository). Used
+    file by file for whichever sample-project file isn't found next to this script,
+    in src\example\.
 
 .PARAMETER ExampleBinBaseUrl
-    Base URL hosting bin\example\ (default: this project's site), for the example
+    Base URL hosting bin\example\ (default: this project's GitHub repository), for the example
     data files that are binaries rather than sources: the Access sample database
     bin\example\access\sample-store.mdb, which is copied into the generated
     project. Used only when that file isn't found in -ProjectBinDir.
@@ -141,28 +143,38 @@
 [CmdletBinding()]
 param(
     [string]$InstallDir = (Join-Path $env:SystemDrive.ToLower() 'cobol-dev'),
+    # The download fallback is the project's own GitHub repository,
+    # https://github.com/phe-sto/cobol-on-windows (see CLAUDE.md). Two different
+    # hosts are needed there, and they are not interchangeable:
+    #   - media.githubusercontent.com/media/<repo>/<ref>/<path> for the big
+    #     binaries in bin\, which are tracked with Git LFS. raw.githubusercontent.com
+    #     answers 200 for those with the ~130-byte LFS pointer text instead of the
+    #     file, which would leave the install unpacking garbage.
+    #   - raw.githubusercontent.com/<repo>/<ref>/<path> for everything that is a
+    #     plain file in the repository (src\example\, bin\example\). The media
+    #     host answers 404 for those.
     # Original from https://github.com/VSCodium/vscodium/releases
-    [string]$VSCodiumUrl = 'https://www.papit.fr/cow/bin/VSCodium-win32-x64-1.135.06055.zip',
+    [string]$VSCodiumUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/VSCodium-win32-x64-1.135.06055.zip',
     # Original from $GnuCobolUrl https://www.arnoldtrembley.com/GC32M-BDB-x64.7z
-    [string]$GnuCobolUrl = 'https://www.papit.fr/cow/bin/GC32M-BDB-x64.7z',
+    [string]$GnuCobolUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/GC32M-BDB-x64.7z',
     # Original from https://www.7-zip.org/a/7zr.exe
-    [string]$SevenZipUrl = 'https://www.papit.fr/cow/bin/7zr.exe',
+    [string]$SevenZipUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/7zr.exe',
     # Original from https://github.com/mridoni/gixsql/releases
-    [string]$GixSqlUrl = 'https://www.papit.fr/cow/bin/gixsql-binaries-windows-x64-mingw-1.0.20b-1.7z',
+    [string]$GixSqlUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/gixsql-binaries-windows-x64-mingw-1.0.20b-1.7z',
     # Original: IBM's DB2 CLI/ODBC driver ("DS Driver") has no stable, login-free
-    # download URL of its own, so the papit.fr/cow mirror is the only default here.
-    [string]$Db2CliUrl = 'https://www.papit.fr/cow/bin/ntx64_odbc_cli.zip',
+    # download URL of its own, so this project's own copy is the only default here.
+    [string]$Db2CliUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/ntx64_odbc_cli.zip',
     # Original from Microsoft: see .PARAMETER AccessEngineUrl below. Only installed
     # when this script itself is running elevated (Administrator) - see section 2c.
-    [string]$AccessEngineUrl = 'https://www.papit.fr/cow/bin/accessdatabaseengine_X64.exe',
+    [string]$AccessEngineUrl = 'https://media.githubusercontent.com/media/phe-sto/cobol-on-windows/main/bin/accessdatabaseengine_X64.exe',
     # Embedded binary sources for this project (see CLAUDE.md: src/ + bin/).
     [string]$ProjectBinDir,
     # Hosted copy of src/example/, used the same way as -ProjectBinDir when this
-    # script runs standalone (see CLAUDE.md).
-    [string]$ExampleBaseUrl = 'https://www.papit.fr/cow/src/example',
+    # script runs standalone (see CLAUDE.md). Plain repository files, so raw. here.
+    [string]$ExampleBaseUrl = 'https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/example',
     # Same, for the example data files that are binaries and so live in
     # bin/example/ instead: the Access sample database.
-    [string]$ExampleBinBaseUrl = 'https://www.papit.fr/cow/bin/example',
+    [string]$ExampleBinBaseUrl = 'https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/bin/example',
     [switch]$PersistUserEnv,
     [switch]$Force
 )
@@ -348,7 +360,8 @@ function Get-RemoteFile([string]$Url, [string]$OutFile) {
 
 # Prefers a local embedded copy (under $LocalDir, at $RelativePath) over the network,
 # so the project still works when only this script is downloaded: its embedded
-# sources/binaries double as the hosted fallback at papit.fr/cow (see CLAUDE.md).
+# sources/binaries double as the download fallback, served by the GitHub
+# repository they are committed in (see CLAUDE.md).
 function Get-EmbeddedOrRemoteFile([string]$RelativePath, [string]$Url, [string]$OutFile, [string]$LocalDir = $ProjectBinDir) {
     if ((Test-Path $OutFile) -and -not $Force) {
         Write-Host "   already downloaded: $(Split-Path $OutFile -Leaf)"
@@ -911,8 +924,9 @@ foreach ($rel in @('hello\hello-world.cob', 'subroutine\greeter-main.cob')) {
 #    was recovered, a matching import library was regenerated with dlltool,
 #    and libfmt.dll (its one external runtime dependency; spdlog is linked
 #    in statically) was added alongside - see bin\gixsql-binaries-windows-
-#    x64-mingw-1.0.20b-1.7z\lib\x64\gcc. A papit.fr-hosted copy still needs
-#    to be re-uploaded separately to pick up this fix for the download path.
+#    x64-mingw-1.0.20b-1.7z\lib\x64\gcc. The download path serves that very
+#    same archive from the GitHub repository, so committing it is all the
+#    fallback needs to carry the fix too.
 #    libgixsql-mysql.dll in that same embedded archive is also a rebuild:
 #    _mysql_exec_params() never applied connection_opts->fixup_parameters
 #    (only prepare() did), so a parameterized statement - this example's
