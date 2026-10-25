@@ -66,17 +66,12 @@ From a clone or a copy of this project — uses the embedded binaries, no networ
 powershell -ExecutionPolicy Bypass -File .\src\install-cobol-on-win.ps1
 ```
 
-With only `install-cobol-on-win.ps1` downloaded from this repository — it fetches what it needs
-from here, file by file:
+Or without cloning anything at all — two commands, the script then fetches what it needs from
+this repository, file by file:
 
 ```powershell
+Invoke-WebRequest -UseBasicParsing -OutFile install-cobol-on-win.ps1 https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/install-cobol-on-win.ps1
 powershell -ExecutionPolicy Bypass -File .\install-cobol-on-win.ps1
-```
-
-```powershell
-# or, to get the script itself first:
-Invoke-WebRequest -UseBasicParsing -OutFile install-cobol-on-win.ps1 `
-  https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/install-cobol-on-win.ps1
 ```
 
 Useful options:

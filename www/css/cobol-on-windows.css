@@ -42,8 +42,11 @@ a{color:var(--color-accent)}a:hover{color:var(--ink)}
 .hero h1 em{font-style:normal;font-weight:500}
 .hero p.lead{font-size:19px;color:var(--g4);max-width:30em;text-wrap:pretty}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.install{margin-top:28px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:14px;background:var(--color-surface);border:1px solid var(--color-divider);padding:10px 14px;width:max-content;max-width:100%;white-space:nowrap;overflow-x:auto}
-.install span{color:var(--g3)}
+.install{margin-top:28px;display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:14px;background:var(--color-surface);border:1px solid var(--color-divider);padding:10px 14px;max-width:100%}
+/* The raw.githubusercontent URL is ~95 characters: the command wraps, with the
+   prompt kept out of the flow, rather than scrolling the hero sideways. */
+.install .line{display:flex;gap:12px;align-items:baseline;overflow-wrap:anywhere}
+.install span{color:var(--g3);flex:none}
 /* window chrome */
 .win{background:var(--g1);border:1px solid var(--ink);box-shadow:inset 1px 1px 0 var(--white),inset -1px -1px 0 var(--g3),8px 8px 0 var(--ink)}
 .win-bar{display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--color-bg);padding:5px 6px 5px 10px;font-size:13px;font-family:var(--mono)}
@@ -89,6 +92,8 @@ section.band{padding:96px 0;border-bottom:1px solid var(--color-divider)}
 .step .n{font-family:var(--mono);font-size:13px}
 .step h3{font-size:22px;font-weight:400;margin:0}
 .step code{font-family:var(--mono);font-size:13.5px;background:var(--color-surface);border:1px solid var(--color-divider);padding:10px 12px;display:block;overflow-x:auto;white-space:nowrap}
+/* Same as .install: a step holding a full download URL wraps instead of scrolling. */
+.step code.multi{white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:visible;line-height:1.6}
 .step p{color:var(--g4);margin:0;font-size:15px}
 footer{padding:48px 0 64px;font-size:14px;color:var(--g4)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:baseline}

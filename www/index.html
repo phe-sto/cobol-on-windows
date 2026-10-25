@@ -37,7 +37,11 @@
           <span class="mono">.dll</span>. No admin rights, no emulator, no licence server.</p>
         <div class="cta"><a class="btn btn-solid" href="#start">Get started →</a><a class="btn btn-line"
             href="https://github.com/phe-sto/cobol-on-windows#readme">Read the docs</a></div>
-        <div class="install"><span>PS&gt;</span>powershell -ExecutionPolicy Bypass -File .\install-cobol-on-win.ps1
+        <div class="install">
+          <div class="line"><span>PS&gt;</span>Invoke-WebRequest -UseBasicParsing -OutFile
+            install-cobol-on-win.ps1
+            https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/install-cobol-on-win.ps1</div>
+          <div class="line"><span>PS&gt;</span>powershell -ExecutionPolicy Bypass -File .\install-cobol-on-win.ps1</div>
         </div>
       </div>
       <div class="win" role="img" aria-label="PowerShell window running install-cobol-on-win.ps1">
@@ -46,7 +50,7 @@
         <div class="win-menu">
           <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>V</u>iew</span><span><u>H</u>elp</span>
         </div>
-        <div class="win-body"><span class="p">PS C:\cow&gt;</span> .\src\install-cobol-on-win.ps1
+        <div class="win-body"><span class="p">PS C:\cow&gt;</span> .\install-cobol-on-win.ps1
 
 <span class="a">==&gt;</span> VSCodium (portable zip)
 <span class="a">==&gt;</span> GnuCOBOL 3.2 64-bit (bundled MinGW GCC)
@@ -276,11 +280,12 @@ order_id   cust_id    order_date           shipped_date         status
       </div>
       <div class="steps">
         <div class="step"><span class="n">STEP 1</span>
-          <h3>Install</h3><code>.\install-cobol-on-win.ps1</code>
-          <p>Run it with <span class="mono">powershell -ExecutionPolicy Bypass -File</span>. Everything lands in
-            <span class="mono">C:\cobol-dev</span>; add <span class="mono">-InstallDir</span> to put it elsewhere.</br>
-            The script works on its own, whatever is not next to it is downloaded from the
-            <a href="https://github.com/phe-sto/cobol-on-windows">GitHub repository</a>.</p>
+          <h3>Download, then install</h3><code class="multi">Invoke-WebRequest -UseBasicParsing -OutFile install-cobol-on-win.ps1 https://raw.githubusercontent.com/phe-sto/cobol-on-windows/main/src/install-cobol-on-win.ps1
+powershell -ExecutionPolicy Bypass -File .\install-cobol-on-win.ps1</code>
+          <p>Nothing to clone and nothing to unzip: two lines in any PowerShell window. The script works on its own —
+            whatever is not next to it, compiler included, it downloads from the
+            <a href="https://github.com/phe-sto/cobol-on-windows">GitHub repository</a>. Everything lands in
+            <span class="mono">C:\cobol-dev</span>; add <span class="mono">-InstallDir</span> to put it elsewhere.</p>
         </div>
         <div class="step"><span class="n">STEP 2</span>
           <h3>Open the IDE</h3><code>C:\cobol-dev\CoBOL-Codium.cmd</code>
