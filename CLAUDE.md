@@ -5,6 +5,10 @@ one with modern IDE with syntax highlighting, Debugger, examples.
 
 Business aim is to sell my freelance expertise in development.
 
+# Git
+
+I, the human developer is the only one to commit.
+
 # Requirements
 
 * No clicks, just a script our our installer.

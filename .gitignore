@@ -8,3 +8,4 @@ gixsql.log
 bin/example/**/*.exe
 bin/example/**/*.dll
 bin/example/**/*.cmd
+.\docs\nohup.out
